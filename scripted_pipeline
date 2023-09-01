@@ -1,0 +1,21 @@
+node {
+    
+    stage ('Git Clone'){
+       git credentialsId: 'Git-Credi', url: 'https://github.com/subburepalle1/maven-web-app.git'   
+    }
+    
+    stage ('Maven Clean Build'){
+        def mavenHome = tool name: "Maven-3.9.4", type: "maven"
+        def mavenCMD = "${mavenHome}/bin/mvn"
+        sh "${mavenCMD} clean package"
+    } 
+	
+
+		stage ('Deploy'){
+        sshagent(['tomcat-server-1']) {
+		sh 'scp -o StrictHostKeyChecking=no target/01-maven-web-app.war ubuntu@3.111.35.59:/opt/tomcat/webapps'
+	   }
+    }
+}
+
+
