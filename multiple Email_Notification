@@ -1,0 +1,20 @@
+pipeline {
+    agent any
+    environment {
+        recipientEmails = "r.subburepalle@gmail.com, repallesubbu4@gmail.com"
+    }
+    stages {
+        stage('Hello') {
+            steps {
+                echo "Hello world"
+              }
+            }
+        }
+    post{
+        always{
+            mail to: "${recipientEmails}",
+            subject: "Test Email",
+            body: "Test Building...."
+		}
+	}
+}
