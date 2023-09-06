@@ -1,0 +1,18 @@
+pipeline {
+    agent any
+    stages {
+        stage('Git Clone') {
+            steps {
+                echo 'Cloning repo from git hub'
+            }
+        }
+   }
+   
+   post{
+        always{
+            mail to: "r.subburepalle@gmail.com",
+            subject: "Test Email",
+            body: "Test Build...."
+        }
+    }
+}
