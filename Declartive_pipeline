@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+ environment {
+        PATH = "/opt/maven/bin:$PATH"
+    }
+    stages {
+        stage('Git Clone') {
+            steps {
+                git credentialsId: 'Git_cred', url: 'https://github.com/subburepalle1/maven-web-app.git'
+            }
+        }
+        stage('Maven Build') {
+            steps {
+                 sh 'mvn clean install'
+            }
+        }
+  stage ('Deploy'){
+            steps {
+             sshagent(['tomcat-slave1'])  {
+			sh 'scp -o StrictHostKeyChecking=no **/*.war ubuntu@3.109.203.246:/opt/tomcat/webapps'
+	   }
+    }
+   }
+ }
+ }
+       
